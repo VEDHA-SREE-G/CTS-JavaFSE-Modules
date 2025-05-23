@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Event Registration Form</title>
+    <style>
+        body{
+            margin: 0;
+            padding: 0;
+            background: rgb(131, 131, 255);
+            text-align: center;
+        }
+        form{
+            background-color: #eee;
+            width: 50%;
+            margin: 30px auto;
+            border: 2px solid black;
+            border-radius: 5px;
+        }
+        label{
+            flex: 10%;
+            font-size: 20px;
+            margin: 20px;
+        }
+        input[type="text"],
+        input[type="email"],
+        input[type="datetime-local"],
+        textarea,
+        select{
+            flex: 30%;
+            height: 20px;
+            margin: 20px;
+        }
+        input[type="submit"],
+        input[type="button"]{  
+            margin-bottom: 30px;
+            background: rgb(131, 131, 255);
+            height:30px;
+            width: 120px;
+            border-radius: 2px;
+            border: 2px solid black;
+            cursor: pointer;
+        }
+        .row{
+            display: flex;
+        }
+        output{
+            display: block;
+        }
+        video{
+            margin: 10px;
+            margin-top: 15px;
+            width: 90%;
+            height: auto;
+            border-radius: 5px;
+            border: 2px solid black;
+        }
+        .btn{
+            display: flex;
+            justify-content: center;
+            gap:20px;
+        }
+    </style>
+</head>
+<body>
+    
+    <h1>Register To Our Community Event!</h1>
+    <form id="regForm">
+        <video src="https://cdn.pixabay.com/video/2015/11/07/1275-145116912_medium.mp4" controls oncanplay="videoReady()"></video>
+        <p id="status"></p>
+        <div class="row">
+        <label>Name</label>
+        <input type="text" required placeholder="Enter your name" id="name" autofocus>
+        </div>
+        <div class="row">
+        <label>Email</label>
+        <input type="email" placeholder="Enter your email" required>
+        </div>
+        <div class="row">
+        <label>Date</label>
+        <input type="datetime-local" id="date" required>
+        </div>
+        <div class="row">
+        <label>Event Type</label>
+        <select required id="eventtype">
+            <option value="sports">Sports</option>
+            <option value="music">Music</option>
+            <option value="arts">Arts</option>
+            <option value="community">Community</option>
+            <option value="festival">Festival</option>
+            <option value="charity">Charity</option>
+            <option value="conference">Conference</option>
+            <option value="workshop">Workshop</option>
+            <option value="exhibition">Exhibition</option>
+            <option value="fundraiser">Fundraiser</option>
+            <option value="food">Food</option>
+            <option value="theater">Theater</option>
+            <option value="technology">Technology</option>
+            <option value="education">Education</option>
+            <option value="environmental">Environmental</option>
+            <option value="holiday">Holiday</option>
+        </select>
+        </div>
+        <div class="row">
+        <label>Message</label>
+        <textarea placeholder="Enter your message"></textarea>
+        </div>
+        <div class="btn">
+        <input type="submit" value="submit" >
+        <input type="button" value="ClearPreferences" onclick="clearPreference()" >
+        </div>
+        <output id="submitted"></output>
+    </form>
+    <script>
+        document.getElementById('regForm').onsubmit = function confirmation(event){
+            event.preventDefault();
+            const currentDate = new Date();
+            const selectedDate = new Date(document.getElementById('date').value);
+            const name = document.getElementById('name').value.trim();
+            if(name.length < 3){
+                alert("Name must be at least 3 characters.");
+                return;
+            }
+            currentDate.setHours(0,0,0,0);
+            if(selectedDate <= currentDate){
+                alert("Please select a future date.");
+                return;
+            }
+            const selectedEvent = document.getElementById("eventtype").value;
+            localStorage.setItem("preferredEvent", selectedEvent);
+            document.getElementById("submitted").textContent = "Thank you for registering!";
+    }
+    function videoReady(){
+        document.getElementById("status").textContent = "Play Our Event Video";
+    }
+    window.onbeforeunload = () => {
+        return "Are you sure you want to leave? Changes you made may not be saved.";
+    }
+    window.onload = () => {
+        const preferred = localStorage.getItem("preferredEvent");
+       document.getElementById("eventtype").value = preferred;
+    }
+    function clearPreference(){
+        localStorage.clear();
+        alert("Preferences cleared. Reloading...");
+        location.reload();
+    }
+    </script>
+</body>
+</html>

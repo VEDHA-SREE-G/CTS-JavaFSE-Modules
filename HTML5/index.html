@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Local Community Event Portal</title>
+    <style>
+        body{
+            margin: 0;
+            padding: 0;
+        }
+        #welcomeBanner{
+            background-color: rgb(131, 131, 255);
+            color: white;
+            height: 80vh;
+            text-align: center;
+        }
+        .highlight{
+            border: 2px solid yellow;
+            border-radius: 5px;
+            width: 50%;
+            margin-left: auto;
+            margin-right: auto;
+            padding-top:10px;
+        }
+        table{
+            margin-right: auto;
+            margin-left: auto;
+        }
+        .gallery {
+            width: 80%; 
+            height: 150px;
+            border: 2px solid #000;
+        }
+        #events h1,figcaption{
+            text-align: center;
+        }
+        .enlarged{
+            transform: scale(2);
+        }
+        button{
+            background: rgb(131, 131, 255);
+            height:40px;
+            width: 120px;
+            border-radius: 2px;
+            border: 2px solid black;
+            cursor: pointer;
+            margin-top:20px;
+            margin-left: 45%;
+        }
+        #output{
+          text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav>
+        <ul>
+            <li><a href="#home">Home</a></li>
+            <li><a href="#events" onclick="showSection('events')">Events</a></li>
+            <li><a href="#contact" onclick="showSection('contact')">Contact</a></li>
+            <li><a href="help.html" target="_blank">Help</a></li>
+        </ul>
+    </nav>
+    <div id="welcomeBanner">
+        <h1>Welcome to the Local City Portal</h1>
+        <div class="highlight">
+        <span style="color:red; font-weight: bold;">SPECIAL OFFER </span>
+        <p>Register now for exclusive benefits!</p>
+        </div>
+    </div>
+    <!-- Main -->
+    <main>
+        <!--Home-->
+        <section id="home">
+        <h1>Local City Portal</h1>
+        <p>Stay updated with the latest events and services.</p>
+        </section>
+        <!-- Events Section -->
+    <section id="events">
+        <h1>Image Gallery</h1>
+        <table>
+            <tr>
+                <td>
+                    <img src="https://cdn.pixabay.com/photo/2025/05/19/10/22/volunteers-9609005_1280.png" alt="Event-1"  title="Event-1"  class="gallery">
+                    <figcaption>community-wide donation</figcaption>
+                </td>
+                <td>
+                    <img src="https://cdn.pixabay.com/photo/2019/06/13/16/06/dance-4271941_1280.jpg" alt="Event-1"  title="Event-1"  class="gallery">
+                    <figcaption>heritage celebration</figcaption>
+                </td>
+                <td>
+                    <img src="https://media.istockphoto.com/id/1372673129/photo/street-foods-at-a-night-food-festival-held-in-galle-fort-sri-lanka-chef-making-hot-dogs-with.jpg?s=1024x1024&w=is&k=20&c=CrnvjBggQzLUt9SNqH4oxJsdnzrD4_azZffdK2jWR3s="  alt="Event-1"  title="Event-1"  class="gallery">
+                    <figcaption>cultural food fest</figcaption>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <img src="https://cdn.pixabay.com/photo/2025/05/19/10/22/volunteers-9609005_1280.png" alt="Event-1" title="Event-1"  class="gallery">
+                    <figcaption>community-wide donation</figcaption>
+                </td>
+                <td>
+                    <img src="https://cdn.pixabay.com/photo/2019/06/13/16/06/dance-4271941_1280.jpg" alt="Event-1"   title="Event-1"  class="gallery">
+                    <figcaption>heritage celebration</figcaption>
+                </td>
+                <td>
+                    <img src="https://media.istockphoto.com/id/1372673129/photo/street-foods-at-a-night-food-festival-held-in-galle-fort-sri-lanka-chef-making-hot-dogs-with.jpg?s=1024x1024&w=is&k=20&c=CrnvjBggQzLUt9SNqH4oxJsdnzrD4_azZffdK2jWR3s="  alt="Event-1"  title="Event-1"  class="gallery">
+                    <figcaption>cultural food fest</figcaption>
+                </td>
+            </tr>
+        </table>
+        <!-- <h2>Upcoming Events</h2>
+        <p>Details of events will be displayed here.</p> -->
+        <button onclick="find()">Find Nearby Events</button>
+        <div id="output"></div>
+    </section>
+    <!-- Contact Section -->
+    <section id="contact">
+        <h2>Contact Us</h2>
+        <p>Contact details will be displayed here.</p>
+    </section>
+    </main>
+    <!-- Footer -->
+    <footer>
+        <p>©2025 Local City Council</p>
+    </footer>
+    <script>
+        document.querySelectorAll(".gallery").forEach(img => {
+            img.ondblclick = function(){
+            img.classList.toggle("enlarged");
+            }
+        });
+        function find(){
+            const output = document.getElementById('output');
+            output.textContent = "Locating...";
+            if (!navigator.geolocation) {
+                output.textContent = "Geolocation is not supported by your browser.";
+                return;
+            }
+            const options = {
+                enableHighAccuracy: true,  
+                timeout: 10000,            
+                maximumAge: 0              
+};
+        navigator.geolocation.getCurrentPosition(
+        position => {
+          const lat = position.coords.latitude.toFixed(6);
+          const lon = position.coords.longitude.toFixed(6);
+          output.innerHTML = `Your location:<br>Latitude: ${lat}<br>Longitude: ${lon}<br><br><strong>Nearby events will be shown here (if integrated with backend/maps).</strong>`;
+        },
+        error => {
+          switch (error.code) {
+            case error.PERMISSION_DENIED:
+              output.textContent = "User denied the request for Geolocation.";
+              break;
+            case error.POSITION_UNAVAILABLE:
+              output.textContent = "Location information is unavailable.";
+              break;
+            case error.TIMEOUT:
+              output.textContent = "The request to get your location timed out.";
+              break;
+            default:
+              output.textContent = "An unknown error occurred.";
+              break;
+          }
+        },
+        options
+      );
+
+        }
+    </script>
+</body>
+</html>
