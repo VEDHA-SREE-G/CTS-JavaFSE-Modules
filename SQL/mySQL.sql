@@ -8,7 +8,7 @@ CREATE TABLE Users (
     email VARCHAR(100) UNIQUE NOT NULL COMMENT 'User’s email',
     city VARCHAR(100) NOT NULL COMMENT 'City of the user',
     registration_date DATE NOT NULL COMMENT 'Date when user registered'
-) COMMENT = 'Table for storing registered users';
+);
 
 
 CREATE TABLE Events (
