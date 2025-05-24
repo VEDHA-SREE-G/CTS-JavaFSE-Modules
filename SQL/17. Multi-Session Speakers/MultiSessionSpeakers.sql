@@ -1,0 +1,1 @@
+select speaker_name from Sessions group by speaker_name having count(session_id) > 1;
